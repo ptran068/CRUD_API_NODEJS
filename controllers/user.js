@@ -5,15 +5,16 @@ const UserController = {};
 
 UserController.getUsers = async (req, res) => {
     try {
-        User.find().then( data => res.json({
-            message: 'success',
-            user: data
-        }));
-        
+        const user = await User.find();
+        return res.json({
+            isSuccess: true,
+            user: user
+        });   
     } catch (e) {
         return res.json({
-            message: 'not found'
-        })
+            message: 'Not found',
+            err: e.message
+        });
     }
 }
 
@@ -22,11 +23,11 @@ UserController.addUser = async (req, res) => {
         const {userName, password, fullname} = req.body;
         if (!password) {
             return res.status(400).json({
-                message: 'err',
+                message: 'Invalid Password'             
             })
         }
         const user = new User ({
-            _id: new mongoose.Types.ObjectId(),
+            // _id: new mongoose.Types.ObjectId(),
             userName,
             password,
             fullname
@@ -46,17 +47,19 @@ UserController.addUser = async (req, res) => {
 };
 UserController.updateUser = async (req, res) => {
     try {
-        let data = await User.findById(req.params.idUser);
-        if (!data) {
+        const userId = req.params.id;
+        let user = await User.findById(userId);
+        if (!user) {
             return res.json({message: 'False'});
         }
-        data.userName = req.body.userName;
-        data.password = req.body.password;
-        data.fullname = req.body.fullname;
-        await data.save();
+        const body = req.body;
+        user.userName = body.userName;
+        user.password = body.password;
+        user.fullname = body.fullname;
+        await user.save();
         return res.json({
                 isSuccess: true,
-                user: data
+                user: user
         });     
        
     } catch (e) {
@@ -70,11 +73,12 @@ UserController.updateUser = async (req, res) => {
 
 UserController.deleteUser = async (req, res) => {
         try {
-            
-            await User.findById(req.params.idUser).deleteOne(function() {
-                return res.json({message: 'success'});
+            const idUser = req.params.id
+            await User.findById(idUser).deleteOne();
+            return res.json({
+                isSuccess: true,
+                message: 'Done'
             });
-
         } catch (e) {
             return res.status(400).json({
                 isSuccess: false,

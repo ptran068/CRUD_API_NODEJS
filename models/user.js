@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const userSchema = new Schema ({
-    _id: mongoose.Types.ObjectId,
+    // _id: mongoose.Types.ObjectId,
     userName: {
         type: String,
         required: 'Please enter your name',

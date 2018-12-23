@@ -6,6 +6,7 @@
     "start": "nodemon server.js --exec babel-node",
     "build": "next build",
     "test": "echo \"Error: no test specified\" && exit 1"
+    
   },
   "author": "cedric",
   "license": "MIT",
