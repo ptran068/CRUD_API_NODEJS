@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import User from '../models/user';
 
 const UserController = {};
@@ -24,10 +23,9 @@ UserController.addUser = async (req, res) => {
         if (!password) {
             return res.status(400).json({
                 message: 'Invalid Password'             
-            })
+            });
         }
         const user = new User ({
-            // _id: new mongoose.Types.ObjectId(),
             userName,
             password,
             fullname
@@ -40,8 +38,7 @@ UserController.addUser = async (req, res) => {
    } catch (e) {    
         return res.status(400).json({
             isSuccess: false,
-            message: e.message,
-            
+            message: e.message
         });
    }
 };
@@ -65,8 +62,7 @@ UserController.updateUser = async (req, res) => {
     } catch (e) {
         return res.status(400).json({
             isSuccess: false,
-            message: e.message,
-            
+            message: e.message         
         });
     }
 }
@@ -87,8 +83,5 @@ UserController.deleteUser = async (req, res) => {
             });
         } 
 }
-
-
-
 
 export default UserController;
